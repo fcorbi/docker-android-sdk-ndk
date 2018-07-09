@@ -12,10 +12,17 @@ ENV ANDROID_SDK_ROOT=/opt/android-sdk-linux
 
 ENV PATH ${PATH}:${ANDROID_HOME}/platform-tools/:${ANDROID_NDK_HOME}:${ANDROID_HOME}/ndk-bundle:${ANDROID_HOME}/tools/bin/
 
-RUN apt-get update &&\
-    apt-get install -y software-properties-common &&\
-    add-apt-repository ppa:ubuntu-sdk-team/ppa &&\
-    apt-get install -y libqt5widgets5
+# RUN apt-get update &&\
+#     apt-get install -y software-properties-common &&\
+#     add-apt-repository ppa:ubuntu-sdk-team/ppa &&\
+#     apt-get install -y libqt5widgets5
+
+RUN curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz > /tmp/google-cloud-sdk.tar.gz &&\
+    mkdir -p /usr/local/gcloud &&\
+    tar -C /usr/local/gcloud -xvf /tmp/google-cloud-sdk.tar.gz &&\
+    /usr/local/gcloud/google-cloud-sdk/install.sh
+
+ENV PATH ${PATH}:/usr/local/gcloud/google-cloud-sdk/bin
 
 RUN    mkdir -p ${ANDROID_HOME} \
     && wget --quiet --output-document=${ANDROID_HOME}/android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-${ANDROID_SDK_TOOLS_REV}.zip \
